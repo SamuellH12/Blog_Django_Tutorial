@@ -7,6 +7,10 @@ from .forms import PostForm
 # Create your views here.
 def post_list(request):
     posts = Post.objects.filter(publish_date__lte=timezone.now()).order_by('-publish_date')
+    for post in posts:
+        if len(post.text) > 400:
+            post.text = post.text[0:399] + "... "
+        
     return render(request, 'blog/post_list.html', {'posts':posts} )
 
 def post_detail(request, pk):
